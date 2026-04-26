@@ -166,6 +166,20 @@ function generateReviews(productId) {
   return reviews;
 }
 
+function generateMedia(product) {
+  const baseUrl = product.image.split('?')[0];
+  const gallery = [
+    product.image,
+    `${baseUrl}?auto=format&fit=crop&q=80&w=800&sig=${product.id}01`,
+    `${baseUrl}?auto=format&fit=crop&q=80&w=800&sig=${product.id}02`,
+    `${baseUrl}?auto=format&fit=crop&q=80&w=800&sig=${product.id}03`
+  ];
+  const frames360 = Array.from({ length: 16 }, (_, i) =>
+    `${baseUrl}?auto=format&fit=crop&q=80&w=800&sig=${product.id}f${String(i).padStart(2, '0')}`
+  );
+  return { gallery, frames360 };
+}
+
 export const MOCK_PRODUCTS = RAW_PRODUCTS.map(p => {
   const reviews = generateReviews(p.id);
   const avgRating = reviews.length > 0
@@ -179,6 +193,7 @@ export const MOCK_PRODUCTS = RAW_PRODUCTS.map(p => {
       'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800',
       'https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&q=80&w=800'
     ],
+    media: generateMedia(p),
     rating: avgRating,
     reviewsCount: reviews.length,
     reviews,

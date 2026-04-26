@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { MOCK_PRODUCTS, COMPANIES } from '../data/mockData';
 import { useCart } from '../context/CartContext';
 import ProductCard from '../components/ProductCard/ProductCard';
+import ProductMediaViewer from '../components/ProductMediaViewer/ProductMediaViewer';
 import { Minus, Plus, ShoppingBag, Star, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
 import ReviewSection from '../components/ReviewSection/ReviewSection';
 import './ProductDetail.css';
@@ -10,9 +11,8 @@ import './ProductDetail.css';
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addToCart, setIsCartOpen } = useCart();
   const [product, setProduct] = useState(null);
-  const [mainImage, setMainImage] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [activeAccordion, setActiveAccordion] = useState('description');
 
@@ -22,7 +22,6 @@ const ProductDetail = () => {
     const foundProduct = MOCK_PRODUCTS.find(p => p.id === id);
     if (foundProduct) {
       setProduct(foundProduct);
-      setMainImage(foundProduct.images ? foundProduct.images[0] : foundProduct.image);
       setQuantity(1);
     }
   }, [id]);
@@ -34,14 +33,13 @@ const ProductDetail = () => {
   const company = COMPANIES.find(c => c.id === product.companyId);
 
   const handleAddToCart = () => {
-    for (let i = 0; i < quantity; i++) {
-       addToCart(product);
-    }
+    addToCart(product, quantity);
   };
 
   const handleBuyNow = () => {
-    handleAddToCart();
-    alert(`Proceeding to checkout with ${quantity} item(s)`);
+    addToCart(product, quantity);
+    // Ideally redirect to checkout, but for now we open the cart
+    setIsCartOpen(true);
   };
 
   const toggleAccordion = (section) => {
@@ -60,24 +58,9 @@ const ProductDetail = () => {
         </button>
 
         <div className="product-main">
-          {/* Gallery Section */}
+          {/* Media Viewer — Gallery + 360° */}
           <div className="product-gallery">
-            <div className="main-image-container">
-              <img src={mainImage} alt={product.name} className="main-image" />
-            </div>
-            {product.images && product.images.length > 1 && (
-              <div className="thumbnail-list">
-                {product.images.map((img, index) => (
-                  <button 
-                    key={index} 
-                    className={`thumbnail-btn ${mainImage === img ? 'active' : ''}`}
-                    onClick={() => setMainImage(img)}
-                  >
-                    <img src={img} alt={`${product.name} Thumbnail ${index + 1}`} className="thumbnail-image" />
-                  </button>
-                ))}
-              </div>
-            )}
+            <ProductMediaViewer media={product.media} />
           </div>
 
           {/* Info Section */}

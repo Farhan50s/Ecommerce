@@ -57,6 +57,7 @@ img, picture, video, canvas, svg {
 
 main {
   flex: 1;
+  padding-top: 80px;
 }
 
 /* Animations */
