@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Menu, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ShoppingBag, Menu, X, Heart } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
 import SearchBar from '../SearchBar/SearchBar';
 import './Navbar.css';
 
@@ -10,7 +11,9 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const { cartCount, toggleCart } = useCart();
+  const { wishlist } = useWishlist();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,6 +79,11 @@ const Navbar = () => {
                 <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
               </svg>
             )}
+          </button>
+
+          <button className="icon-btn" onClick={() => navigate('/wishlist')} aria-label="Go to Wishlist">
+            <Heart size={20} />
+            {wishlist.length > 0 && <span className="cart-badge">{wishlist.length}</span>}
           </button>
 
           <button className="icon-btn cart-btn" onClick={toggleCart} aria-label="Open cart">

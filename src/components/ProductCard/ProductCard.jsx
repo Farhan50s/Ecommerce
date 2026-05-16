@@ -1,13 +1,25 @@
-import React from 'react';
 import { ShoppingBag, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
 import { COMPANIES } from '../../data/mockData';
 import './ProductCard.css';
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isWishlisted } = useWishlist();
   const company = COMPANIES.find(c => c.id === product.companyId);
+  const wishlisted = isWishlisted(product.id);
+
+  const handleWishlistToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (wishlisted) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+  };
 
   return (
     <div className="product-card fade-in">
@@ -16,8 +28,12 @@ const ProductCard = ({ product }) => {
           <img src={product.image} alt={product.name} className="product-image" loading="lazy" />
         </Link>
         <div className="product-actions">
-          <button className="action-btn" aria-label="Add to Wishlist">
-            <Heart size={20} />
+          <button 
+            className={`action-btn wishlist-btn ${wishlisted ? 'active' : ''}`} 
+            aria-label={wishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+            onClick={handleWishlistToggle}
+          >
+            <Heart size={20} fill={wishlisted ? "currentColor" : "none"} className={wishlisted ? "heart-filled" : ""} />
           </button>
         </div>
         {product.featured && <span className="badge">Featured</span>}

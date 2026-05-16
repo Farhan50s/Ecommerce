@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { MOCK_PRODUCTS, COMPANIES } from '../data/mockData';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import ProductCard from '../components/ProductCard/ProductCard';
 import ProductMediaViewer from '../components/ProductMediaViewer/ProductMediaViewer';
-import { Minus, Plus, ShoppingBag, Star, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
+import { Minus, Plus, ShoppingBag, Star, ChevronDown, ChevronUp, ArrowLeft, Heart } from 'lucide-react';
 import ReviewSection from '../components/ReviewSection/ReviewSection';
 import ProductAssistant from '../components/ProductAssistant/ProductAssistant';
 import useCountdown from '../hooks/useCountdown';
@@ -14,6 +15,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart, setIsCartOpen } = useCart();
+  const { addToWishlist, removeFromWishlist, isWishlisted } = useWishlist();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [activeAccordion, setActiveAccordion] = useState('description');
@@ -40,6 +42,16 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
+  };
+
+  const wishlisted = product ? isWishlisted(product.id) : false;
+
+  const handleWishlistToggle = () => {
+    if (wishlisted) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
   };
 
   const handleBuyNow = () => {
@@ -139,6 +151,13 @@ const ProductDetail = () => {
                 </button>
                 <button className="buy-now-btn btn btn-primary" onClick={handleBuyNow}>
                   Buy It Now
+                </button>
+                <button 
+                  className={`wishlist-detail-btn ${wishlisted ? 'active' : ''}`} 
+                  onClick={handleWishlistToggle}
+                  aria-label={wishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+                >
+                  <Heart size={24} fill={wishlisted ? "currentColor" : "none"} className={wishlisted ? "heart-filled" : ""} />
                 </button>
               </div>
             </div>
