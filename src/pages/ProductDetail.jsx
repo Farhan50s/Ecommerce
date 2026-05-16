@@ -6,6 +6,7 @@ import ProductCard from '../components/ProductCard/ProductCard';
 import ProductMediaViewer from '../components/ProductMediaViewer/ProductMediaViewer';
 import { Minus, Plus, ShoppingBag, Star, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
 import ReviewSection from '../components/ReviewSection/ReviewSection';
+import ProductAssistant from '../components/ProductAssistant/ProductAssistant';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
@@ -173,6 +174,9 @@ const ProductDetail = () => {
           </div>
         )}
       </div>
+      
+      {/* AI Product Assistant Widget */}
+      <ProductAssistant product={product} />
     </div>
   );
 };
