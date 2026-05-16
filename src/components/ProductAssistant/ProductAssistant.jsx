@@ -80,14 +80,25 @@ Here are the complete product details:
 
 Answer customer questions about this product ONLY. Be elegant, concise, friendly, and confident. Use markdown (e.g., bullet points, bolding) to format your responses beautifully. If you don't know something from the provided details, honestly and gracefully admit it.`;
 
-      const conversationHistory = newMessages.map(m => ({
+      // Anthropic API requires the messages array to start with a 'user' message
+      let apiMessages = [...newMessages];
+      if (apiMessages.length > 0 && apiMessages[0].role === 'assistant') {
+        apiMessages = apiMessages.slice(1); // Remove the initial greeting
+      }
+
+      const conversationHistory = apiMessages.map(m => ({
         role: m.role,
         content: m.content
       }));
 
       const response = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "anthropic-version": "2023-06-01",
+          "anthropic-dangerous-direct-browser-access": "true",
+          "x-api-key": "dummy-key-for-artifact-env"
+        },
         body: JSON.stringify({
           model: "claude-haiku-4-5-20251001",
           max_tokens: 1000,
@@ -97,7 +108,14 @@ Answer customer questions about this product ONLY. Be elegant, concise, friendly
       });
 
       if (!response.ok) {
-        throw new Error(`API Error: ${response.status}`);
+        let errorMsg = `API Error: ${response.status}`;
+        try {
+          const errData = await response.json();
+          if (errData.error && errData.error.message) {
+            errorMsg = errData.error.message;
+          }
+        } catch(e) {}
+        throw new Error(errorMsg);
       }
 
       const data = await response.json();
@@ -108,7 +126,7 @@ Answer customer questions about this product ONLY. Be elegant, concise, friendly
       console.error("AI Error:", error);
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: "Sorry, I'm experiencing a momentary connection issue. Please try again in a moment." 
+        content: `Sorry, I'm experiencing a momentary connection issue. (${error.message}) Please try again in a moment.` 
       }]);
     } finally {
       setIsLoading(false);

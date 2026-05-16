@@ -33,6 +33,8 @@ const RAW_PRODUCTS = [
     id: '1',
     name: 'Aero X1 Wireless Headphones',
     price: 299.99,
+    salePrice: 199.99,
+    saleEndsAt: Date.now() + 2 * 60 * 60 * 1000, // ~2 hours
     category: 'Electronics',
     companyId: 'c1',
     image: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=800',
@@ -43,6 +45,8 @@ const RAW_PRODUCTS = [
     id: '2',
     name: 'Minimalist Ceramic Vase',
     price: 45.00,
+    salePrice: 29.99,
+    saleEndsAt: Date.now() + 18 * 60 * 60 * 1000, // ~18 hours
     category: 'Home Goods',
     companyId: 'c2',
     image: 'https://images.unsplash.com/photo-1581783342308-f792db841f32?auto=format&fit=crop&q=80&w=800',
@@ -63,6 +67,8 @@ const RAW_PRODUCTS = [
     id: '4',
     name: 'Lumiere Smart Watch Series 3',
     price: 499.00,
+    salePrice: 349.00,
+    saleEndsAt: Date.now() + 2 * 24 * 60 * 60 * 1000, // ~2 days
     category: 'Electronics',
     companyId: 'c1',
     image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=800',
@@ -83,6 +89,8 @@ const RAW_PRODUCTS = [
     id: '6',
     name: 'Essential Leather Tote',
     price: 210.00,
+    salePrice: 159.00,
+    saleEndsAt: Date.now() + 4 * 24 * 60 * 60 * 1000, // ~4 days
     category: 'Accessories',
     companyId: 'c3',
     image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=800',
@@ -103,6 +111,8 @@ const RAW_PRODUCTS = [
     id: '8',
     name: 'Nomad Canvas Backpack',
     price: 120.00,
+    salePrice: 89.99,
+    saleEndsAt: Date.now() - 24 * 60 * 60 * 1000, // expired 1 day ago
     category: 'Accessories',
     companyId: 'c3',
     image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=800',

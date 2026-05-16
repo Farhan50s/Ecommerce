@@ -8,6 +8,7 @@ import Shop from './pages/Shop';
 import ProductDetail from './pages/ProductDetail';
 import CompanyProfile from './pages/CompanyProfile';
 import Brands from './pages/Brands';
+import FlashSalePage from './pages/FlashSalePage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/brands" element={<Brands />} />
             <Route path="/company/:id" element={<CompanyProfile />} />
+            <Route path="/sales" element={<FlashSalePage />} />
             {/* Fallback route */}
             <Route path="*" element={<Home />} />
           </Routes>

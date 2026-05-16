@@ -62,6 +62,7 @@ const Navbar = () => {
             >
               Brands
             </Link>
+            <Link to="/sales" className={location.pathname === '/sales' ? 'active' : ''} style={{ fontWeight: 600, color: 'var(--color-danger)' }}>Sales 🔥</Link>
           </nav>
 
           {/* Mobile Search Toggle */}

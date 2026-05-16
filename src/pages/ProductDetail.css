@@ -127,11 +127,74 @@
   font-size: 0.9rem;
 }
 
+.product-price-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-sm);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-danger);
+}
+
 .product-price {
   font-family: var(--font-family-heading);
   font-size: 1.8rem;
   font-weight: 600;
+}
+
+.product-price:not(.sale-active) {
   margin-bottom: var(--spacing-xl);
+}
+
+.product-price.sale-active {
+  color: var(--color-danger);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  font-size: 2.2rem;
+}
+
+.product-price-original.strike {
+  color: var(--color-text-tertiary);
+  text-decoration: line-through;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.pd-discount-badge {
+  background: var(--color-danger);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.pd-sale-timer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 1rem;
+  color: var(--color-text-primary);
+  background: var(--color-surface-hover);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  width: max-content;
+}
+
+.pd-sale-timer .timer-label {
+  font-weight: 500;
+  color: var(--color-danger);
+}
+
+.pd-sale-timer .timer-value {
+  font-family: monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 /* Actions and Form */

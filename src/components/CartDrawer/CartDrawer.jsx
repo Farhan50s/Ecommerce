@@ -39,7 +39,16 @@ const CartDrawer = () => {
                   <img src={item.image} alt={item.name} className="cart-item-image" />
                   <div className="cart-item-details">
                     <h3>{item.name}</h3>
-                    <p className="cart-item-price">${item.price.toFixed(2)}</p>
+                    {(() => {
+                      const isSaleActive = item.salePrice && item.saleEndsAt && item.saleEndsAt > Date.now();
+                      const effectivePrice = isSaleActive ? item.salePrice : item.price;
+                      return (
+                        <p className="cart-item-price">
+                          ${effectivePrice.toFixed(2)}
+                          {isSaleActive && <span style={{ textDecoration: 'line-through', fontSize: '0.8rem', color: 'var(--color-text-tertiary)', marginLeft: '6px' }}>${item.price.toFixed(2)}</span>}
+                        </p>
+                      );
+                    })()}
                     
                     <div className="cart-item-actions">
                       <div className="quantity-controls">

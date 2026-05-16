@@ -48,7 +48,14 @@ export const CartProvider = ({ children }) => {
   
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
-  const cartTotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const getEffectivePrice = (item) => {
+    if (item.salePrice && item.saleEndsAt && item.saleEndsAt > Date.now()) {
+      return item.salePrice;
+    }
+    return item.price;
+  };
+
+  const cartTotal = cartItems.reduce((total, item) => total + (getEffectivePrice(item) * item.quantity), 0);
   const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0);
 
   return (

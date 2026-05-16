@@ -7,6 +7,7 @@ import ProductMediaViewer from '../components/ProductMediaViewer/ProductMediaVie
 import { Minus, Plus, ShoppingBag, Star, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
 import ReviewSection from '../components/ReviewSection/ReviewSection';
 import ProductAssistant from '../components/ProductAssistant/ProductAssistant';
+import useCountdown from '../hooks/useCountdown';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
@@ -16,6 +17,10 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [activeAccordion, setActiveAccordion] = useState('description');
+
+  const { days, hours, minutes, seconds, expired } = useCountdown(product?.saleEndsAt);
+  const isSaleActive = product && product.salePrice && product.saleEndsAt && !expired;
+  const discountPercent = isSaleActive ? Math.round((1 - product.salePrice / product.price) * 100) : 0;
 
   useEffect(() => {
     // Navigate scroll to top on mount
@@ -93,7 +98,24 @@ const ProductDetail = () => {
                 <span className="rating-value">{product.rating}</span>
                 <span className="reviews-count">({product.reviewsCount || 12} reviews)</span>
               </div>
-              <div className="product-price">${product.price.toFixed(2)}</div>
+              
+              {isSaleActive ? (
+                <div className="product-price-section">
+                  <div className="product-price sale-active">
+                    ${product.salePrice.toFixed(2)}
+                    <span className="product-price-original strike">${product.price.toFixed(2)}</span>
+                    <span className="pd-discount-badge">-{discountPercent}%</span>
+                  </div>
+                  <div className="pd-sale-timer">
+                    <span className="timer-label">Sale ends in:</span>
+                    <span className="timer-value">
+                      {String(days).padStart(2, '0')}:{String(hours).padStart(2, '0')}:{String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="product-price">${product.price.toFixed(2)}</div>
+              )}
             </div>
 
             <div className="product-actions-form">
