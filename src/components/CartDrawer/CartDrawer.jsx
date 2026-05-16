@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import FreeShippingBar from '../FreeShippingBar/FreeShippingBar';
 import './CartDrawer.css';
 
 const CartDrawer = () => {
@@ -32,6 +33,7 @@ const CartDrawer = () => {
             </div>
           ) : (
             <div className="cart-items">
+              <FreeShippingBar />
               {cartItems.map(item => (
                 <div key={item.id} className="cart-item slide-up">
                   <img src={item.image} alt={item.name} className="cart-item-image" />

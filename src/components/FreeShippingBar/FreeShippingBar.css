@@ -1,0 +1,228 @@
+/* ═══════════════════════════════════════════════════════
+   Free Shipping Progress Bar
+   Dark luxury glassmorphism style with shimmer animation
+   ═══════════════════════════════════════════════════════ */
+
+.free-shipping-bar {
+  position: relative;
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subtle glass reflection overlay */
+.free-shipping-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  pointer-events: none;
+}
+
+/* Unlocked state glow */
+.free-shipping-bar.unlocked {
+  border-color: rgba(46, 213, 115, 0.25);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.2),
+    0 0 30px rgba(46, 213, 115, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ── Content Row ─────────────────────────────── */
+
+.shipping-bar-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.shipping-bar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  flex-shrink: 0;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.free-shipping-bar.unlocked .shipping-bar-icon {
+  background: rgba(46, 213, 115, 0.15);
+  color: #2ed573;
+}
+
+.shipping-bar-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.shipping-message {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  animation: fadeSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.shipping-message.pending {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.shipping-message.pending strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.shipping-message.unlocked {
+  color: #2ed573;
+  font-weight: 600;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Progress Track ──────────────────────────── */
+
+.shipping-progress-track {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.shipping-progress-fill {
+  position: relative;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition:
+    width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.shipping-progress-fill.complete {
+  background: linear-gradient(90deg, #2ed573 0%, #7bed9f 50%, #2ed573 100%);
+  background-size: 200% 100%;
+  animation: successGradientShift 3s ease infinite;
+}
+
+@keyframes successGradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Shimmer / shine animation */
+.shipping-progress-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.25) 40%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.25) 60%,
+    transparent 100%
+  );
+  animation: shimmer 2.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+/* Milestone dots on the track */
+.shipping-milestone {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── Meta Row (amounts) ──────────────────────── */
+
+.shipping-bar-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+.shipping-bar-amount,
+.shipping-bar-goal {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.shipping-bar-amount {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.shipping-bar-goal {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.free-shipping-bar.unlocked .shipping-bar-amount {
+  color: rgba(46, 213, 115, 0.7);
+}
+
+.free-shipping-bar.unlocked .shipping-bar-goal {
+  color: rgba(46, 213, 115, 0.4);
+}
