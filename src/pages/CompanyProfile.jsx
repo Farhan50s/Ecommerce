@@ -45,7 +45,16 @@ const CompanyProfile = () => {
               <span className="stat-value">{company.followers}</span>
               <span className="stat-label">Followers</span>
             </div>
-            <div className="stat-item">
+            <div 
+              className="stat-item" 
+              onClick={() => {
+                const productsSection = document.querySelector('.company-products-section');
+                if (productsSection) {
+                  productsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              style={{ cursor: 'pointer' }}
+            >
               <span className="stat-value">{products.length}</span>
               <span className="stat-label">Products</span>
             </div>
