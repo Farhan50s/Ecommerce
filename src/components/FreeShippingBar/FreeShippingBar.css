@@ -226,3 +226,35 @@
 .free-shipping-bar.unlocked .shipping-bar-goal {
   color: rgba(46, 213, 115, 0.4);
 }
+
+/* ── Mobile Responsive ─────────────────────────────── */
+@media (max-width: 768px) {
+  .free-shipping-bar {
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .shipping-message {
+    font-size: 0.82rem;
+  }
+
+  .shipping-bar-icon {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .free-shipping-bar {
+    padding: 10px 14px;
+  }
+
+  .shipping-message {
+    font-size: 0.8rem;
+  }
+
+  .shipping-bar-amount,
+  .shipping-bar-goal {
+    font-size: 0.65rem;
+  }
+}

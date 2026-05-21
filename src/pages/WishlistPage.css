@@ -104,3 +104,26 @@
     gap: 1rem;
   }
 }
+
+@media (max-width: 480px) {
+  .wishlist-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .wishlist-header p {
+    font-size: 0.95rem;
+  }
+  
+  .wishlist-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+  
+  .clear-all-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
+

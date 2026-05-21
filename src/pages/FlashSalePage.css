@@ -293,20 +293,117 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .flash-hero {
+    padding: var(--spacing-xl) var(--spacing-md);
+    margin: var(--spacing-md);
+  }
+
   .flash-title {
-    font-size: 2.5rem;
+    font-size: 2.4rem;
+    letter-spacing: 2px;
   }
-  
+
   .flash-filters {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: var(--spacing-md) var(--spacing-sm);
+    gap: var(--spacing-sm);
+    scrollbar-width: none;
   }
-  
+
+  .flash-filters::-webkit-scrollbar {
+    display: none;
+  }
+
   .filter-btn {
-    text-align: center;
+    white-space: nowrap;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 0.9rem;
   }
-  
+
   .flash-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--spacing-md);
+    padding: 0 var(--spacing-md) var(--spacing-xl);
+  }
+
+  .countdown-box {
+    width: 48px;
+    padding: 4px 0;
+  }
+
+  .countdown-value {
+    font-size: 1rem;
+  }
+
+  .countdown-label {
+    font-size: 0.6rem;
   }
 }
+
+@media (max-width: 480px) {
+  .flash-page {
+    padding-top: 80px;
+  }
+
+  .flash-title {
+    font-size: 1.8rem;
+  }
+
+  .flash-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .flash-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  .flash-info {
+    padding: var(--spacing-sm);
+  }
+
+  .flash-name {
+    font-size: 0.95rem;
+  }
+
+  .sale-price {
+    font-size: 1.05rem;
+  }
+
+  .original-price {
+    font-size: 0.85rem;
+  }
+
+  .countdown-container {
+    gap: 3px;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .countdown-box {
+    width: 32px;
+    padding: 2px 0;
+  }
+
+  .countdown-value {
+    font-size: 0.8rem;
+  }
+
+  .countdown-label {
+    font-size: 0.5rem;
+    margin-top: 1px;
+  }
+
+  .ended-badge {
+    font-size: 0.8rem;
+    padding: 6px 0;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .btn-add-cart {
+    padding: 10px;
+    font-size: 0.8rem;
+  }
+}
+

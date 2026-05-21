@@ -437,6 +437,8 @@
     flex: 1;
     justify-content: center;
     padding: 12px 16px;
+    /* Ensure 44px minimum tap target */
+    min-height: 44px;
   }
 
   .gallery__arrow {
@@ -448,5 +450,41 @@
   .gallery__thumb-btn {
     width: 60px;
     height: 60px;
+  }
+
+  /* Prevent thumbnail scroll from triggering page scroll */
+  .gallery__thumbnails {
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery__thumb-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .gallery__arrow {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* Scale down 360° hint so it doesn't dominate small screens */
+  .viewer360__hint-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+  }
+
+  .viewer360__hint-label {
+    font-size: 0.72rem;
+    padding: 3px 10px;
+  }
+
+  /* Lightbox counter stays readable */
+  .lightbox__counter {
+    font-size: 0.8rem;
+    bottom: -32px;
   }
 }

@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import ProductCard from '../components/ProductCard/ProductCard';
 import ProductMediaViewer from '../components/ProductMediaViewer/ProductMediaViewer';
-import { Minus, Plus, ShoppingBag, Star, ChevronDown, ChevronUp, ArrowLeft, Heart } from 'lucide-react';
+import { Minus, Plus, ShoppingBag, Star, ChevronDown, ChevronUp, ArrowLeft, Heart, GitCompare, X, Search } from 'lucide-react';
 import ReviewSection from '../components/ReviewSection/ReviewSection';
 import ProductAssistant from '../components/ProductAssistant/ProductAssistant';
 import useCountdown from '../hooks/useCountdown';
@@ -20,6 +20,11 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeAccordion, setActiveAccordion] = useState('description');
 
+  // Compare panel state
+  const [isCompareOpen, setIsCompareOpen] = useState(false);
+  const [compareSearch, setCompareSearch] = useState('');
+  const [compareTarget, setCompareTarget] = useState(null);
+
   const { days, hours, minutes, seconds, expired } = useCountdown(product?.saleEndsAt);
   const isSaleActive = product && product.salePrice && product.saleEndsAt && !expired;
   const discountPercent = isSaleActive ? Math.round((1 - product.salePrice / product.price) * 100) : 0;
@@ -31,6 +36,10 @@ const ProductDetail = () => {
     if (foundProduct) {
       setProduct(foundProduct);
       setQuantity(1);
+      // Reset compare panel state when product changes
+      setIsCompareOpen(false);
+      setCompareSearch('');
+      setCompareTarget(null);
     }
   }, [id]);
 
@@ -152,12 +161,20 @@ const ProductDetail = () => {
                 <button className="buy-now-btn btn btn-primary" onClick={handleBuyNow}>
                   Buy It Now
                 </button>
-                <button 
-                  className={`wishlist-detail-btn ${wishlisted ? 'active' : ''}`} 
-                  onClick={handleWishlistToggle}
-                  aria-label={wishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+                <button
+                  className="compare-trigger-btn"
+                  onClick={() => setIsCompareOpen(true)}
+                  aria-label="Compare with another product"
+                  title="Compare with another product"
                 >
-                  <Heart size={24} fill={wishlisted ? "currentColor" : "none"} className={wishlisted ? "heart-filled" : ""} />
+                  <GitCompare size={22} />
+                </button>
+                <button
+                  className={`wishlist-detail-btn ${wishlisted ? 'active' : ''}`}
+                  onClick={handleWishlistToggle}
+                  aria-label={wishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
+                >
+                  <Heart size={24} fill={wishlisted ? 'currentColor' : 'none'} className={wishlisted ? 'heart-filled' : ''} />
                 </button>
               </div>
             </div>
@@ -218,6 +235,114 @@ const ProductDetail = () => {
       
       {/* AI Product Assistant Widget */}
       <ProductAssistant product={product} />
+
+      {/* Compare Panel Overlay */}
+      {isCompareOpen && (() => {
+        const filteredProducts = MOCK_PRODUCTS.filter(
+          p =>
+            p.id !== product.id &&
+            p.name.toLowerCase().includes(compareSearch.toLowerCase())
+        );
+        return (
+          <>
+            {/* Backdrop */}
+            <div
+              className="compare-overlay"
+              onClick={() => setIsCompareOpen(false)}
+              aria-hidden="true"
+            />
+
+            {/* Slide-up Panel */}
+            <div className="compare-panel" role="dialog" aria-label="Compare with another product" aria-modal="true">
+              <div className="cp-drag-handle" aria-hidden="true" />
+
+              <div className="cp-panel-header">
+                <span className="cp-panel-title">Compare with another product</span>
+                <button
+                  className="cp-panel-close"
+                  onClick={() => setIsCompareOpen(false)}
+                  aria-label="Close compare panel"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Selected Target Chip */}
+              {compareTarget && (
+                <div className="cp-selected-chip">
+                  <img src={compareTarget.image} alt={compareTarget.name} className="cp-chip-thumb" />
+                  <span className="cp-chip-name">{compareTarget.name}</span>
+                  <button
+                    className="cp-chip-remove"
+                    onClick={() => setCompareTarget(null)}
+                    aria-label={`Remove ${compareTarget.name}`}
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              )}
+
+              {/* Search Input */}
+              <div className="cp-search-wrap">
+                <Search size={16} className="cp-search-icon" />
+                <input
+                  type="text"
+                  className="cp-search-input"
+                  placeholder="Search for a product..."
+                  value={compareSearch}
+                  onChange={e => setCompareSearch(e.target.value)}
+                  autoFocus
+                />
+              </div>
+
+              {/* Results List */}
+              <div className="cp-results">
+                {filteredProducts.length === 0 ? (
+                  <p className="cp-no-results">No products match your search.</p>
+                ) : (
+                  filteredProducts.map(p => (
+                    <button
+                      key={p.id}
+                      className={`cp-result-item ${compareTarget?.id === p.id ? 'selected' : ''}`}
+                      onClick={() => setCompareTarget(p)}
+                    >
+                      <div className="cp-result-thumb">
+                        <img src={p.image} alt={p.name} />
+                      </div>
+                      <div className="cp-result-info">
+                        <span className="cp-result-name">{p.name}</span>
+                        <span className="cp-result-meta">
+                          {p.category} &nbsp;·&nbsp; ${p.price.toFixed(2)}
+                        </span>
+                      </div>
+                      {compareTarget?.id === p.id && (
+                        <span className="cp-result-check" aria-hidden="true">✓</span>
+                      )}
+                    </button>
+                  ))
+                )}
+              </div>
+
+              {/* Compare Now Button */}
+              <div className="cp-panel-footer">
+                <button
+                  className="cp-compare-now-btn"
+                  disabled={!compareTarget}
+                  onClick={() => {
+                    if (compareTarget) {
+                      navigate(`/compare?a=${product.id}&b=${compareTarget.id}`);
+                      setIsCompareOpen(false);
+                    }
+                  }}
+                >
+                  <GitCompare size={18} />
+                  {compareTarget ? `Compare with "${compareTarget.name}"` : 'Select a product above'}
+                </button>
+              </div>
+            </div>
+          </>
+        );
+      })()}
     </div>
   );
 };

@@ -194,19 +194,19 @@
 }
 
 /* ── Mobile Responsive ─────────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .searchbar-container {
     max-width: 100%;
     width: 100%;
   }
 
   .searchbar-dropdown {
-    /* On mobile fill the full viewport width, anchored to the left edge of the screen */
-    position: fixed;
-    top: 72px;
-    left: var(--spacing-md);
-    right: var(--spacing-md);
-    width: auto;
+    /* Keep absolute positioning instead of fixed to prevent layout overlapping/glitches when scrolling or expanding */
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    width: 100%;
     max-height: 60vh;
     border-radius: var(--radius-lg);
     overflow-y: auto;
@@ -214,5 +214,40 @@
 
   .searchbar-suggestion-list {
     max-height: none;
+  }
+
+  /* Bigger tap targets for touch */
+  .searchbar-suggestion-item {
+    padding: 10px var(--spacing-md);
+    min-height: 52px;
+  }
+
+  .searchbar-input-wrapper {
+    padding: 10px var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .searchbar-dropdown {
+    max-height: 55vh;
+  }
+
+  /* Larger thumbnails for touch browsing */
+  .suggestion-thumbnail {
+    width: 44px;
+    height: 52px;
+  }
+
+  .suggestion-name {
+    font-size: 0.88rem;
+  }
+
+  .suggestion-price {
+    font-size: 0.88rem;
+  }
+
+  .searchbar-clear-btn {
+    width: 28px;
+    height: 28px;
   }
 }
