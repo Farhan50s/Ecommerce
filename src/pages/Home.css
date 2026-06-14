@@ -208,9 +208,13 @@
   .section-header h2 {
     font-size: 1.5rem;
   }
+  .featured-section {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
   .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-md);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
   }
 }
 

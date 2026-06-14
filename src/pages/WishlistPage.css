@@ -115,8 +115,8 @@
   }
   
   .wishlist-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-md);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
   }
   
   .clear-all-btn {

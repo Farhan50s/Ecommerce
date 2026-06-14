@@ -1,13 +1,15 @@
 import React from 'react';
 import { X } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useComparison } from '../../context/ComparisonContext';
 import './ComparisonTray.css';
 
 const ComparisonTray = () => {
   const { comparisonItems, removeFromComparison, clearComparison } = useComparison();
   const navigate = useNavigate();
+  const location = useLocation();
 
+  if (location.pathname === '/compare') return null;
   if (comparisonItems.length === 0) return null;
 
   const canCompare = comparisonItems.length === 2;
